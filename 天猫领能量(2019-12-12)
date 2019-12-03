@@ -1,101 +1,55 @@
-"auto";
-toast("请打开充能量中心 即活动页面点击充能量图标");
-var i = 1;
-var j = 6;
-//请大家务必根据自己实际情况修改需等待时间，如果手机卡顿或者网络不好请将相应的time值改大，单位为毫秒
-var time1 = 4122;//点进去浏览后等待的时间，等待时间后会执行滑动操作。如果你的设备在我设置的时间内还没有显示出来送能量那个东西，就需要把时间改长一些
-var time2 = 2872;//返回后等待的时间
-                   
-//如果sml_move函数没有异常，则不必修改下面参数。如果异常请自行修改下面的值
-//此处不使用原生的线性滑动，使用随机非线性滑动，是因为怕被系统检测到时脚本
-var x1 = 402;    //滑动起始位置的x轴坐标
-var y1 = 1433;   //滑动起始位置的y轴坐标
-var x2 = 587;    //滑动结束位置的x轴坐标
-var y2 = 768;    //滑动结束位置的y轴坐标
-  
-//点击 充能量 后 即在 充能量中心运行此脚本 
-//签到
-if (textContains("签到").exists()) {        
-    textContains("签到").click();                
-    toast("签到成功")    
-}    
-sleep(1000); 
+auto.waitFor();
+var height = device.height;
+var width = device.width;
+toast("\n设备宽" + width + "\n" + "设备高" + height + "\n" + "手机型号" + device.model + "\n安卓版本" + device.release)
+setScreenMetrics(width, height);
+jintiao();
  
-liulan("去浏览");
-liulan("去搜索");
-liulan("去兑换");
-toast("全都搞定啦~");
-toast("如果有拍立淘麻烦自己搞一下~辛苦啦");
-  
-  
-function liulan(text){
-    while (textContains(text).exists()) {   
-        toast("第" + (i++) + "个");
-        textContains(text).click();
-        sleep(time1);
-        sml_move(x1,y1,x2,y2,1687);
-        sleep(15234);
+function jintiao() {
+    app.launchApp("手机淘宝");
+    sleep(2000);
+    toast("打开淘宝")
+    sleep(6000); //手机打开淘宝时间比较长，就把这个 6000（6秒） 改成  12000（12秒）或是 合适的时间
+    click(812, 1240); //进入活动页
+    toast('进入活动页面');
+    sleep(4000);
+    click(980, 1420); //点击充能量上边气泡积累的能量
+    sleep(1500);
+    click(950, 1580); //点击充能量
+    sleep(2000);
+    if (textEndsWith("去签到").exists()) {
+        textEndsWith("去签到").findOne().click();
+        sleep(1600);
+        toast("签到成功")
+    }
+    sleep(2000);
+    while (textEndsWith("去浏览").exists()){
+        toast("存在去浏览");
+        textEndsWith("去浏览").findOne().click();
+        sleep(3000);
+        swipe(width / 2, height - 500, width / 2, 0, 500);
+        sleep(3500);
+        swipe(width / 2, height - 500, width / 2, 0, 500);
+        sleep(10000);
+        swipe(width / 2, height - 500, width / 2, 0, 500);
+        sleep(6000);
         back();
-        sleep(time2);
+        sleep(2000);
     }
+     
+    while (textEndsWith("去搜索").exists()){
+        toast("存在去搜索");
+        textEndsWith("去搜索").findOne().click();
+        sleep(3000);
+        swipe(width / 2, height - 500, width / 2, 0, 500);
+        sleep(3500);
+        swipe(width / 2, height - 500, width / 2, 0, 500);
+        sleep(10000);
+        swipe(width / 2, height - 500, width / 2, 0, 500);
+        sleep(6000);
+        back();
+        sleep(2000);
+    }
+    toast("运行完成,结束");
+    back();
 }
-  
-  
-function bezier_curves(cp, t) {
-    cx = 3.0 * (cp[1].x - cp[0].x);
-    bx = 3.0 * (cp[2].x - cp[1].x) - cx;
-    ax = cp[3].x - cp[0].x - cx - bx;
-    cy = 3.0 * (cp[1].y - cp[0].y);
-    by = 3.0 * (cp[2].y - cp[1].y) - cy;
-    ay = cp[3].y - cp[0].y - cy - by;
-  
-    tSquared = t * t;
-    tCubed = tSquared * t;
-    result = {
-        "x": 0,
-        "y": 0
-    };
-    result.x = (ax * tCubed) + (bx * tSquared) + (cx * t) + cp[0].x;
-    result.y = (ay * tCubed) + (by * tSquared) + (cy * t) + cp[0].y;
-    return result;
-};
-  
-//仿真随机带曲线滑动  
-//qx, qy, zx, zy, time 代表起点x,起点y,终点x,终点y,过程耗时单位毫秒
-function sml_move(qx, qy, zx, zy, time) {
-    var xxy = [time];
-    var point = [];
-    var dx0 = {
-        "x": qx,
-        "y": qy
-    };
-  
-    var dx1 = {
-        "x": random(qx - 100, qx + 100),
-        "y": random(qy, qy + 50)
-    };
-    var dx2 = {
-        "x": random(zx - 100, zx + 100),
-        "y": random(zy, zy + 50),
-    };
-    var dx3 = {
-        "x": zx,
-        "y": zy
-    };
-    for (var i = 0; i < 4; i++) {
-  
-        eval("point.push(dx" + i + ")");
-  
-    };
-    //log(point[3].x)
-  
-    for (let i = 0; i < 1; i += 0.08) {
-        xxyy = [parseInt(bezier_curves(point, i).x), parseInt(bezier_curves(point, i).y)]
-  
-        xxy.push(xxyy);
-  
-    }
-  
-    //log(xxy);
-    gesture.apply(null, xxy);
-};
