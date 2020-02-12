@@ -1,5 +1,11 @@
-### PicGo配置GitHub图床
-< 官方地址：https://github.com/Molunerfinn/PicGo
+### PicGo
+>官方地址：https://github.com/Molunerfinn/PicGo
+
+由于GitHub图片访问原因，picgo上传生成链接后需要把url链接后边加上
+```
+?raw=true
+```
+后才能正常访问图片
 
 #### 下载安装以后登录自己的GitHub，创建一个新的仓库用于存放图片
 ![](https://github.com/sj13271473920/picture/blob/mater//image-20200209125231964.png?raw=true)
@@ -22,7 +28,7 @@
 
 ### 配置picgo客户端
 
-![](https://github.com/sj13271473920/picture/blob/mater//20200209143535.png?raw=true)
+![](https://github.com/sj13271473920/picture/blob/mater//20200209144220.png?raw=true)
 
 
 ```
